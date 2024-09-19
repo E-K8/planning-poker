@@ -45,6 +45,8 @@
 - Create components for user authentication, creating/joining sessions, and voting interface.
 - Use WebSockets to handle real-time updates.
 - Style the application using CSS or a framework.
+- palette to consider: #073b4c #118ab2 #06d6a0 #ffd166 #ef476f
+- https://coolors.co/visualizer/ef476f-ffd166-06d6a0-118ab2-073b4c
 
 #### Backend Development:
 
