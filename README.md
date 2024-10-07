@@ -1,4 +1,4 @@
-# Planning poker notes
+# Planning poker notes  
 
 ### Step 1: Define the Requirements
 
