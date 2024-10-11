@@ -1,4 +1,12 @@
-export default function Home() {
+import { useState } from 'react';
+import AverageDisplay from '@/components/AverageDisplay';
+import CardSelector from '../components/CardSelector';
+import NewSessionButton from '@/components/NewSessionButton';
+import RevealButton from '@/components/RevealButton';
+import VotesDisplay from '@/components/VotesDisplay';
+import { User } from '@/utils/types';
+
+const Home = () => {
   return (
     <div className='grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
       <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start'>
@@ -22,7 +30,16 @@ export default function Home() {
           <p className='red'>red</p>
         </ol>
       </main>
-      <footer></footer>
+
+      <div>
+        <VotesDisplay />
+        <CardSelector />
+        <RevealButton />
+        <AverageDisplay />
+        <NewSessionButton />
+      </div>
     </div>
   );
-}
+};
+
+export default Home;
