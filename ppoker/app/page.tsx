@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import AverageDisplay from '@/components/AverageDisplay';
 import CardSelector from '../components/CardSelector';
