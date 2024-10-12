@@ -15,7 +15,6 @@ const Home = () => {
   const [votesRevealed, setVotesRevealed] = useState(false);
 
   // handle a vote being cast
-
   const handleVote = (userId: string, value: number) => {
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
@@ -24,8 +23,8 @@ const Home = () => {
     );
   };
 
-  // // reveal the votes
-  // const revealVotes = () => setVotesRevealed(true);
+  // reveal the votes
+  const revealVotes = () => setVotesRevealed(true);
 
   // // start a new voting session
   // const startNewSession = () => {
@@ -45,9 +44,9 @@ const Home = () => {
     <div>
       <VotesDisplay users={users} votesRevealed={votesRevealed} />
       <CardSelector onVote={(value) => handleVote('1', value)} />
-      {/* <RevealButton onReveal={revealVotes} />
-      <AverageDisplay users={users} />
-      <NewSessionButton onNewSession={startNewSession} /> */}
+      <RevealButton onReveal={revealVotes} />
+      {/* <AverageDisplay users={users} /> */}
+      {/* <NewSessionButton onNewSession={startNewSession} /> */}
     </div>
   );
 };
