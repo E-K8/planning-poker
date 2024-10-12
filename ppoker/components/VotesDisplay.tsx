@@ -1,3 +1,5 @@
+import { User } from '@/utils/types';
+
 const VotesDisplay = ({
   users,
   votesRevealed,
