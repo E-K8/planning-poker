@@ -47,7 +47,7 @@ const Home = () => {
       <VotesDisplay users={users} votesRevealed={votesRevealed} />
       <CardSelector onVote={(value) => handleVote('1', value)} />
       <RevealButton onReveal={revealVotes} />
-      {/* <AverageDisplay users={users} /> */}
+      <AverageDisplay users={users} />
       {/* <NewSessionButton onNewSession={startNewSession} /> */}
     </div>
   );
