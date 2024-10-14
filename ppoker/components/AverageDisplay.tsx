@@ -1,3 +1,5 @@
+import { User } from '@/utils/types';
+
 const AverageDisplay = ({ users }: { users: User[] }) => {
   const totalVotes = users.reduce((sum, user) => sum + (user.vote ?? 0), 0);
   const voteCount = users.filter((user) => user.vote !== null).length;
