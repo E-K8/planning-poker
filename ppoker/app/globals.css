@@ -4,6 +4,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.dark-blue {
+  color: white;
+  background-color: #073b4c;
+}
+
 .blue {
   background-color: #118ab2;
 }

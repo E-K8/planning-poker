@@ -36,19 +36,18 @@ const Home = () => {
 
   return (
     // <p>
-    //   Palette to use: palette to consider: #073b4c #118ab2 #06d6a0 #ffd166
-    //   #ef476f
-    // </p>
-    // <p className='blue'>blue</p>
-    // <p className='green'>green</p>
-    // <p className='yellow'>yellow</p>
-    // <p className='red'>red</p>
     <div>
       <VotesDisplay users={users} votesRevealed={votesRevealed} />
       <CardSelector onVote={(value) => handleVote('1', value)} />
       <RevealButton onReveal={revealVotes} />
       <AverageDisplay users={users} />
       {/* <NewSessionButton onNewSession={startNewSession} /> */}
+      <p>Palette to consider: #073b4c #118ab2 #06d6a0 #ffd166 #ef476f</p>
+      <p className='dark-blue'>dark blue</p>
+      <p className='blue'>blue</p>
+      <p className='green'>green</p>
+      <p className='yellow'>yellow</p>
+      <p className='red'>red</p>
     </div>
   );
 };
