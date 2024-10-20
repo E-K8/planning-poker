@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import useSocket from '../components/useSocket';
 import AverageDisplay from '@/components/AverageDisplay';
 import CardSelector from '../components/CardSelector';
 import NewSessionButton from '@/components/NewSessionButton';
@@ -9,6 +10,7 @@ import VotesDisplay from '@/components/VotesDisplay';
 import { User } from '@/utils/types';
 
 const Home = () => {
+  const socket = useSocket(); // hook to use WebSocket
   const [users, setUsers] = useState<User[]>([
     { id: '1', name: 'Colleague 1', vote: null },
     { id: '2', name: 'Colleague 2', vote: null },
@@ -16,13 +18,23 @@ const Home = () => {
 
   const [votesRevealed, setVotesRevealed] = useState(false);
 
+  useEffect(() => {
+    // listen for vote updates from the server
+    if (socket) {
+      socket.on('voteUpdate', (data) => {
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === data.userId ? { ...user, vote: data.vote } : user
+          )
+        );
+      });
+    }
+  }, [socket]);
+
   // handle a vote being cast
   const handleVote = (userId: string, value: number) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id === userId ? { ...user, vote: value } : user
-      )
-    );
+    // emit the vote event to the server
+    socket.emit('vote', { userId, vote: value });
   };
 
   // reveal the votes
