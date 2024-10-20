@@ -21,7 +21,7 @@ const Home = () => {
   useEffect(() => {
     // listen for vote updates from the server
     if (socket) {
-      socket.on('voteUpdate', (data) => {
+      socket.on('voteUpdate', (data: { userId: string; vote: number }) => {
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.id === data.userId ? { ...user, vote: data.vote } : user
@@ -29,12 +29,20 @@ const Home = () => {
         );
       });
     }
+
+    return () => {
+      if (socket) {
+        socket.off('voteUpdate'); // Cleanup the event listener
+      }
+    };
   }, [socket]);
 
   // handle a vote being cast
   const handleVote = (userId: string, value: number) => {
-    // emit the vote event to the server
-    socket.emit('vote', { userId, vote: value });
+    if (socket) {
+      // emit the vote event to the server
+      socket.emit('vote', { userId, vote: value });
+    }
   };
 
   // reveal the votes
@@ -47,7 +55,6 @@ const Home = () => {
   };
 
   return (
-    // <p>
     <div>
       <VotesDisplay users={users} votesRevealed={votesRevealed} />
       <CardSelector onVote={(value) => handleVote('1', value)} />
