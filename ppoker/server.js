@@ -18,7 +18,7 @@ app.prepare().then(() => {
 
     //   Handle the vote event
     socket.on('vote', (data) => {
-      console.log(`Vote received: ${data}`);
+      console.log(`Vote received: ${JSON.stringify(data)}`);
 
       // Broadcast the vote to all clients
       io.emit('voteUpdate', data);
