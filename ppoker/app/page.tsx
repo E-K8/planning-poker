@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import useSocket from '../components/useSocket';
 import AverageDisplay from '@/components/AverageDisplay';
 import CardSelector from '../components/CardSelector';
@@ -9,14 +10,29 @@ import RevealButton from '@/components/RevealButton';
 import VotesDisplay from '@/components/VotesDisplay';
 import { User } from '@/utils/types';
 
+interface VoteData {
+  userId: string;
+  vote: number;
+}
+
 const Home = () => {
   const socket = useSocket(); // hook to use WebSocket
   const [users, setUsers] = useState<User[]>([
-    { id: '1', name: 'Colleague 1', vote: null },
-    { id: '2', name: 'Colleague 2', vote: null },
+    // { id: '1', name: 'Colleague 1', vote: null },
+    // { id: '2', name: 'Colleague 2', vote: null },
   ]);
-
   const [votesRevealed, setVotesRevealed] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null); //local user ID state
+
+  // generate or retrieve the user ID from localStorage
+  useEffect(() => {
+    let storedUserId = localStorage.getItem('userId');
+    if (!storedUserId) {
+      storedUserId = uuidv4(); // generate a new uuid if none exists
+      localStorage.setItem('userId', storedUserId); // save the new userId to localStorage
+    }
+    setUserId(storedUserId); // set the userId state
+  }, []);
 
   useEffect(() => {
     // listen for vote updates from the server
@@ -38,15 +54,24 @@ const Home = () => {
   }, [socket]);
 
   // handle a vote being cast
-  const handleVote = (userId: string, value: number) => {
-    if (socket) {
-      // emit the vote event to the server
-      socket.emit('vote', { userId, vote: value });
+  // const handleVote = (userId: string, value: number) => {
+  //   if (socket) {
+  //     // emit the vote event to the server
+  //     socket.emit('vote', { userId, vote: value });
+  //   }
+  // };
+
+  const handleVote = (value: number) => {
+    if (userId) {
+      socket?.emit('vote', { userId, vote: value });
     }
   };
 
   // reveal the votes
-  const revealVotes = () => setVotesRevealed(true);
+  // const revealVotes = () => setVotesRevealed(true);
+  const revealVotes = () => {
+    socket?.emit('revealVotes');
+  };
 
   // start a new voting session
   const startNewSession = () => {
@@ -57,7 +82,7 @@ const Home = () => {
   return (
     <div>
       <VotesDisplay users={users} votesRevealed={votesRevealed} />
-      <CardSelector onVote={(value) => handleVote('1', value)} />
+      <CardSelector onVote={handleVote} />
       <RevealButton onReveal={revealVotes} />
       <AverageDisplay users={users} />
       <NewSessionButton onNewSession={startNewSession} />
