@@ -37,7 +37,7 @@ const Home = () => {
   useEffect(() => {
     // listen for vote updates from the server
     if (socket) {
-      socket.on('voteUpdate', (data: { userId: string; vote: number }) => {
+      socket.on('voteUpdate', (data: VoteData) => {
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.id === data.userId ? { ...user, vote: data.vote } : user

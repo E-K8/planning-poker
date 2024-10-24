@@ -6,6 +6,9 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+const users = {}; // store users with their userId as key
+let votesRevealed = false;
+
 app.prepare().then(() => {
   const server = createServer((req, res) => {
     handle(req, res);
@@ -16,12 +19,40 @@ app.prepare().then(() => {
   io.on('connection', (socket) => {
     console.log('A user connected');
 
-    //   Handle the vote event
-    socket.on('vote', (data) => {
-      console.log(`Vote received: ${JSON.stringify(data)}`);
+    // send current session state to the newly connected user
+    socket.emit('sessionUpdate', {
+      users: Object.values(users),
+      votesRevealed,
+    });
 
-      // Broadcast the vote to all clients
-      io.emit('voteUpdate', data);
+    //   handle vote submission
+    socket.on('vote', (data) => {
+      const { userId, vote } = data;
+
+      // update or add the user with their vote
+      users[userId] = { id: userId, vote };
+
+      console.log(`Vote received from user: ${userId}: ${vote}`);
+
+      // broadcast the updated user list to all connected clients
+      io.emit('voteUpdate', { users: Object.values(users) });
+    });
+
+    // handle reveal votes event
+    socket.on('revealVotes', () => {
+      votesRevealed = true;
+      io.emit('sessionUpdate', { users: Object.values(users), votesRevealed });
+    });
+
+    // handle starting a new session
+    socket.on('newSession', () => {
+      // reset all votes
+      Object.keys(users).forEach((userId) => {
+        users[userId].vote = null;
+      });
+      votesRevealed = false;
+
+      io.emit('sessionUpdate', { users: Object.values(users), votesRevealed });
     });
 
     //  Handle disconnect
