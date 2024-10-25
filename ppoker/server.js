@@ -29,10 +29,11 @@ app.prepare().then(() => {
     socket.on('vote', (data) => {
       const { userId, vote } = data;
 
+      // log userId and vote to check correctness
+      console.log(`Vote received from user ${userId}: ${value}`);
+
       // update or add the user with their vote
       users[userId] = { id: userId, vote };
-
-      console.log(`Vote received from user: ${userId}: ${vote}`);
 
       // broadcast the updated user list to all connected clients
       io.emit('voteUpdate', { users: Object.values(users) });

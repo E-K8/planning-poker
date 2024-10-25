@@ -31,7 +31,7 @@ const Home = () => {
       storedUserId = uuidv4(); // generate a new uuid if none exists
       localStorage.setItem('userId', storedUserId); // save the new userId to localStorage
     }
-    setUserId(storedUserId); // set the userId state
+    setUserId(storedUserId); // Set the userId state
   }, []);
 
   useEffect(() => {
@@ -63,7 +63,10 @@ const Home = () => {
 
   const handleVote = (value: number) => {
     if (userId) {
+      console.log(`Sending vote from userId: ${userId}, vote: ${value}`);
       socket?.emit('vote', { userId, vote: value });
+    } else {
+      console.log('No userId found');
     }
   };
 
