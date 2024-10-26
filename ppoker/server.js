@@ -30,7 +30,7 @@ app.prepare().then(() => {
       const { userId, vote } = data;
 
       // log userId and vote to check correctness
-      console.log(`Vote received from user ${userId}: ${value}`);
+      console.log(`Vote received from user ${userId}: ${vote}`);
 
       // update or add the user with their vote
       users[userId] = { id: userId, vote };
