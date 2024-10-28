@@ -42,6 +42,8 @@ app.prepare().then(() => {
     // handle reveal votes event
     socket.on('revealVotes', () => {
       votesRevealed = true;
+
+      // broadcast the updated state to all connected clients
       io.emit('sessionUpdate', { users: Object.values(users), votesRevealed });
     });
 

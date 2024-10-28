@@ -8,19 +8,11 @@ import CardSelector from '../components/CardSelector';
 import NewSessionButton from '@/components/NewSessionButton';
 import RevealButton from '@/components/RevealButton';
 import VotesDisplay from '@/components/VotesDisplay';
-import { User } from '@/utils/types';
-
-interface VoteData {
-  userId: string;
-  vote: number;
-}
+import { User, VoteData, SessionUpdateData } from '@/utils/types';
 
 const Home = () => {
   const socket = useSocket(); // hook to use WebSocket
-  const [users, setUsers] = useState<User[]>([
-    // { id: '1', name: 'Colleague 1', vote: null },
-    // { id: '2', name: 'Colleague 2', vote: null },
-  ]);
+  const [users, setUsers] = useState<User[]>([]);
   const [votesRevealed, setVotesRevealed] = useState(false);
   const [userId, setUserId] = useState<string | null>(null); //local user ID state
 
@@ -37,29 +29,30 @@ const Home = () => {
   useEffect(() => {
     // listen for vote updates from the server
     if (socket) {
-      socket.on('voteUpdate', (data: VoteData) => {
+      const handleVoteUpdate = (data: VoteData) => {
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.id === data.userId ? { ...user, vote: data.vote } : user
           )
         );
-      });
+      };
+
+      const handleSessionUpdate = (data: SessionUpdateData) => {
+        setUsers(data.users);
+        setVotesRevealed(data.votesRevealed);
+      };
+
+      // register event listeners
+      socket.on('voteUpdate', handleVoteUpdate);
+      socket.on('sessionUpdate', handleSessionUpdate);
+
+      // clean up listeners on unmount
+      return () => {
+        socket.off('voteUpdate', handleVoteUpdate);
+        socket.off('sessionUpdate', handleSessionUpdate);
+      };
     }
-
-    return () => {
-      if (socket) {
-        socket.off('voteUpdate'); // Cleanup the event listener
-      }
-    };
   }, [socket]);
-
-  // handle a vote being cast
-  // const handleVote = (userId: string, value: number) => {
-  //   if (socket) {
-  //     // emit the vote event to the server
-  //     socket.emit('vote', { userId, vote: value });
-  //   }
-  // };
 
   const handleVote = (value: number) => {
     if (userId) {
@@ -71,7 +64,6 @@ const Home = () => {
   };
 
   // reveal the votes
-  // const revealVotes = () => setVotesRevealed(true);
   const revealVotes = () => {
     socket?.emit('revealVotes');
   };
