@@ -11,7 +11,7 @@ const VotesDisplay = ({
     <div>
       {users.map((user) => (
         <div key={user.id}>
-          {user.name}: {votesRevealed ? user.vote : '?'}
+          {user.name || user.id}: {votesRevealed ? user.vote : '?'}
         </div>
       ))}
     </div>
