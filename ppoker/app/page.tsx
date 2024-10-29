@@ -15,6 +15,7 @@ const Home = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [votesRevealed, setVotesRevealed] = useState(false);
   const [userId, setUserId] = useState<string | null>(null); //local user ID state
+  const [userName, setUserName] = useState<string | null>(null);
 
   // generate or retrieve the user ID from localStorage
   useEffect(() => {
@@ -24,6 +25,18 @@ const Home = () => {
       localStorage.setItem('userId', storedUserId); // save the new userId to localStorage
     }
     setUserId(storedUserId); // Set the userId state
+
+    const storedUserName = localStorage.getItem('userName');
+    if (storedUserName) {
+      setUserName(storedUserName);
+    } else {
+      // prompt user for their name on initial load if it doesn't exist
+      const enteredName = prompt('Enter your name:');
+      if (enteredName) {
+        setUserName(enteredName);
+        localStorage.setItem('userName', enteredName);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -55,9 +68,11 @@ const Home = () => {
   }, [socket]);
 
   const handleVote = (value: number) => {
-    if (userId) {
-      console.log(`Sending vote from userId: ${userId}, vote: ${value}`);
-      socket?.emit('vote', { userId, vote: value });
+    if (userId && userName) {
+      console.log(
+        `Sending vote from user: ${userName} with userId: ${userId}, vote: ${value}`
+      );
+      socket?.emit('vote', { name: userName, userId, vote: value });
     } else {
       console.log('No userId found');
     }
