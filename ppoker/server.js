@@ -30,7 +30,7 @@ app.prepare().then(() => {
       const { name, userId, vote } = data;
 
       // update or add the user with their vote
-      users[userId] = { name, id: userId, vote };
+      users[userId] = { name, id: userId, vote, hasVoted: true };
 
       // log userId and vote to check correctness
       console.log(`Vote received from ${name || userId}: ${vote}`);
@@ -49,9 +49,10 @@ app.prepare().then(() => {
 
     // handle starting a new session
     socket.on('newSession', () => {
-      // reset all votes
+      // reset  votes and "hasVoted" status
       Object.keys(users).forEach((userId) => {
         users[userId].vote = null;
+        users[userId].hasVoted = false;
       });
       votesRevealed = false;
 

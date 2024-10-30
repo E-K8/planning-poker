@@ -8,7 +8,9 @@ import CardSelector from '../components/CardSelector';
 import NewSessionButton from '@/components/NewSessionButton';
 import RevealButton from '@/components/RevealButton';
 import VotesDisplay from '@/components/VotesDisplay';
-import { User, VoteData, SessionUpdateData } from '@/utils/types';
+// import { User, VoteData, SessionUpdateData } from '@/utils/types';
+// below I removed VoteData, trying to do without this interface
+import { User, SessionUpdateData } from '@/utils/types';
 
 const Home = () => {
   const socket = useSocket(); // hook to use WebSocket
@@ -39,15 +41,39 @@ const Home = () => {
     }
   }, []);
 
+  // useEffect(() => {
+  //   // listen for vote updates from the server
+  //   if (socket) {
+  //     const handleVoteUpdate = (data: VoteData) => {
+  //       setUsers((prevUsers) =>
+  //         prevUsers.map((user) =>
+  //           user.id === data.userId ? { ...user, vote: data.vote } : user
+  //         )
+  //       );
+  //     };
+
+  //     const handleSessionUpdate = (data: SessionUpdateData) => {
+  //       setUsers(data.users);
+  //       setVotesRevealed(data.votesRevealed);
+  //     };
+
+  //     // register event listeners
+  //     socket.on('voteUpdate', handleVoteUpdate);
+  //     socket.on('sessionUpdate', handleSessionUpdate);
+
+  //     // clean up listeners on unmount
+  //     return () => {
+  //       socket.off('voteUpdate', handleVoteUpdate);
+  //       socket.off('sessionUpdate', handleSessionUpdate);
+  //     };
+  //   }
+  // }, [socket]);
+
   useEffect(() => {
-    // listen for vote updates from the server
+    // Listen for vote updates from the server
     if (socket) {
-      const handleVoteUpdate = (data: VoteData) => {
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user.id === data.userId ? { ...user, vote: data.vote } : user
-          )
-        );
+      const handleVoteUpdate = (data: { users: User[] }) => {
+        setUsers(data.users); // Update the entire list of users with hasVoted statuses
       };
 
       const handleSessionUpdate = (data: SessionUpdateData) => {
@@ -55,11 +81,11 @@ const Home = () => {
         setVotesRevealed(data.votesRevealed);
       };
 
-      // register event listeners
+      // Register event listeners
       socket.on('voteUpdate', handleVoteUpdate);
       socket.on('sessionUpdate', handleSessionUpdate);
 
-      // clean up listeners on unmount
+      // Clean up listeners on unmount
       return () => {
         socket.off('voteUpdate', handleVoteUpdate);
         socket.off('sessionUpdate', handleSessionUpdate);
