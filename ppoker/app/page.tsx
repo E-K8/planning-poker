@@ -111,8 +111,16 @@ const Home = () => {
 
   // start a new voting session
   const startNewSession = () => {
+    // reset the local state for users and votes revealed
     setUsers((prevUsers) => prevUsers.map((user) => ({ ...user, vote: null })));
     setVotesRevealed(false);
+
+    // clear or reset relevant values in localStorage
+    localStorage.removeItem('userVote');
+    localStorage.removeItem('userHasVoted');
+
+    // emit the event to the server to reset the session for all clients
+    socket?.emit('newSession');
   };
 
   return (
