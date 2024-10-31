@@ -3,6 +3,7 @@ export type User = {
   id: string;
   name: string;
   vote: number | null;
+  hasVoted: boolean;
 };
 
 // Session-related types

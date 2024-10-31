@@ -10,8 +10,12 @@ const VotesDisplay = ({
   return (
     <div>
       {users.map((user) => (
-        <div key={user.id}>
-          {user.name || user.id}: {votesRevealed ? user.vote : '?'}
+        <div
+          key={user.id}
+          style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+        >
+          <span>{user.name || user.id}</span>
+          {user.hasVoted && <span>✔️</span>}: {votesRevealed ? user.vote : '?'}
         </div>
       ))}
     </div>
