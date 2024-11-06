@@ -144,12 +144,17 @@ const Home = () => {
 
   return (
     <div>
-      <SessionForm onJoinSession={joinSession} />
-      <VotesDisplay users={users} votesRevealed={votesRevealed} />
-      <CardSelector onVote={handleVote} />
-      <RevealButton onReveal={revealVotes} />
-      <AverageDisplay users={users} />
-      <NewSessionButton onNewSession={startNewSession} />
+      {/* show the form if not in a session */}
+      {!sessionId && <SessionForm onJoinSession={joinSession} />}
+      {sessionId && (
+        <>
+          <VotesDisplay users={users} votesRevealed={votesRevealed} />
+          <CardSelector onVote={handleVote} />
+          <RevealButton onReveal={revealVotes} />
+          <AverageDisplay users={users} />
+          <NewSessionButton onNewSession={startNewSession} />
+        </>
+      )}
 
       <p>Palette to consider: #073b4c #118ab2 #06d6a0 #ffd166 #ef476f</p>
       <p className='dark-blue'>dark blue</p>
