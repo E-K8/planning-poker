@@ -142,6 +142,15 @@ const Home = () => {
     }
   };
 
+  const endSession = () => {
+    if (sessionId) {
+      socket?.emit('endSession', sessionId);
+      setSessionId(null);
+      setUsers([]);
+      setVotesRevealed(false);
+    }
+  };
+
   return (
     <div>
       {/* show the form if not in a session */}
@@ -153,6 +162,7 @@ const Home = () => {
           <RevealButton onReveal={revealVotes} />
           <AverageDisplay users={users} />
           <NewSessionButton onNewSession={startNewSession} />
+          <button onClick={endSession}>End Session</button>
         </>
       )}
 
