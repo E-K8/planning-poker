@@ -8,7 +8,7 @@ export type User = {
 
 // Session-related types
 export interface Session {
-  id: string;
+  sessionId: string;
   users: User[];
   votesRevealed: boolean;
 }
