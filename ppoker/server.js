@@ -32,7 +32,7 @@ app.prepare().then(() => {
         });
       }
 
-      const session = sessionId.get(sessionId);
+      const session = sessions.get(sessionId);
       const userId = socket.id; // user socket.id as the unique user idenfifier
 
       // add the user to the session
@@ -55,7 +55,7 @@ app.prepare().then(() => {
 
     // handle vote submission
     socket.on('vote', ({ sessionId, userId, vote }) => {
-      const session = session.get(sessionId);
+      const session = sessions.get(sessionId);
       if (session) {
         const user = session.users.find((user) => user.id === userId);
         if (user) {
