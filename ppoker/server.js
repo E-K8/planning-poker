@@ -46,6 +46,8 @@ app.prepare().then(() => {
       // join the user to the session room
       socket.join(sessionId);
 
+      console.log('Session created or joined:', session);
+
       // send the session state back to the client
       callback({ userId, session });
 

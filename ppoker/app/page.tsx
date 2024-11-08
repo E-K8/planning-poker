@@ -49,9 +49,15 @@ const Home = () => {
       'createSession',
       { sessionId, userName },
       (response: { userId: string; session: Session }) => {
-        setUserId(response.userId);
-        setSessionId(response.session.sessionId);
-        setUsers(response.session.users);
+        console.log("Response from 'createSession' event:", response);
+
+        if (response && response.session && response.userId) {
+          setUserId(response.userId);
+          setSessionId(response.session.sessionId);
+          setUsers(response.session.users);
+        } else {
+          console.log('Failed to join session. Response data missing.');
+        }
       }
     );
   };
