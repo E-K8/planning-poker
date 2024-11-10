@@ -15,7 +15,12 @@ const VotesDisplay = ({
           style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
         >
           <span>{user.name || user.id}</span>
-          {user.hasVoted && <span>✔️</span>}: {votesRevealed ? user.vote : '?'}
+          {/* {user.hasVoted && <span>✔️</span>}: {votesRevealed ? user.vote : '?'} */}
+          {votesRevealed ? (
+            <span>{user.vote !== null ? user.vote : '?'}</span> //show vote if revealed
+          ) : (
+            <span>{user.hasVoted ? '✔️' : '?'} </span> // show checkmark if user has voted
+          )}
         </div>
       ))}
     </div>

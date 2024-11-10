@@ -74,12 +74,13 @@ app.prepare().then(() => {
     socket.on('revealVotes', (sessionId) => {
       const session = sessions.get(sessionId);
       if (session) {
-        session.users.forEach((user) => {
-          user.vote = null;
-          user.hasVoted = false;
-        });
-        session.votesRevealed = false;
+        // session.users.forEach((user) => {
+        //   user.vote = null;
+        //   user.hasVoted = false;
+        // });
+        // session.votesRevealed = false;
 
+        session.votesRevealed = true;
         io.to(sessionId).emit('sessionUpdate', session);
       }
     });
