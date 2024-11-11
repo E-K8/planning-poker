@@ -132,6 +132,12 @@ const Home = () => {
     }
   };
 
+  const resetVotes = () => {
+    if (sessionId) {
+      socket?.emit('resetVotes', sessionId); // reset within current session
+    }
+  };
+
   // start a new voting session
   const startNewSession = () => {
     // reset the local state for users and votes revealed
@@ -167,6 +173,7 @@ const Home = () => {
           <CardSelector onVote={handleVote} />
           <RevealButton onReveal={revealVotes} />
           <AverageDisplay users={users} />
+          <button onClick={resetVotes}>Reset Votes</button>
           <NewSessionButton onNewSession={startNewSession} />
           <button onClick={endSession}>End Session</button>
         </>
