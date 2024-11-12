@@ -101,6 +101,21 @@ app.prepare().then(() => {
       }
     });
 
+    socket.on('endSession', (sessionId) => {
+      const session = sessions.get(sessionId);
+
+      if (session) {
+        // remove the session data from the server
+        sessions.delete(sessionId);
+
+        // notify all users in the session to reset their state
+        io.to(sessionId).emit('sessionEnded');
+
+        // disconnect users from the session room to stop further updates
+        io.in(sessionId).socketsLeave(sessionId);
+      }
+    });
+
     // // send current session state to the newly connected user
     // socket.emit('sessionUpdate', {
     //   users: Object.values(users),

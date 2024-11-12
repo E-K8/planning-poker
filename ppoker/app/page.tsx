@@ -105,11 +105,15 @@ const Home = () => {
       // register event listeners
       socket.on('voteUpdate', handleVoteUpdate);
       socket.on('sessionUpdate', handleSessionUpdate);
+      socket.on('sessionEnded', () => {
+        resetClientState();
+      });
 
       // clean up listeners on unmount
       return () => {
         socket.off('voteUpdate', handleVoteUpdate);
         socket.off('sessionUpdate', handleSessionUpdate);
+        socket.off('sessionEnded');
       };
     }
   }, [socket]);
@@ -157,10 +161,14 @@ const Home = () => {
   const endSession = () => {
     if (sessionId) {
       socket?.emit('endSession', sessionId);
-      setSessionId(null);
-      setUsers([]);
-      setVotesRevealed(false);
+      resetClientState();
     }
+  };
+
+  const resetClientState = () => {
+    setSessionId(null);
+    setUsers([]);
+    setVotesRevealed(false);
   };
 
   return (
