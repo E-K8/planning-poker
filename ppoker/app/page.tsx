@@ -6,7 +6,6 @@ import useSocket from '../components/useSocket';
 import SessionForm from '@/components/SessionForm';
 import AverageDisplay from '@/components/AverageDisplay';
 import CardSelector from '../components/CardSelector';
-import NewSessionButton from '@/components/NewSessionButton';
 import RevealButton from '@/components/RevealButton';
 import VotesDisplay from '@/components/VotesDisplay';
 // import { User, VoteData, SessionUpdateData } from '@/utils/types';
@@ -142,22 +141,6 @@ const Home = () => {
     }
   };
 
-  // start a new voting session
-  const startNewSession = () => {
-    // reset the local state for users and votes revealed
-    setUsers((prevUsers) => prevUsers.map((user) => ({ ...user, vote: null })));
-    setVotesRevealed(false);
-
-    // clear or reset relevant values in localStorage
-    localStorage.removeItem('userVote');
-    localStorage.removeItem('userHasVoted');
-
-    // emit the event to the server to reset the session for all clients
-    if (sessionId) {
-      socket?.emit('newSession', sessionId);
-    }
-  };
-
   const endSession = () => {
     if (sessionId) {
       socket?.emit('endSession', sessionId);
@@ -182,7 +165,6 @@ const Home = () => {
           <RevealButton onReveal={revealVotes} />
           <AverageDisplay users={users} />
           <button onClick={resetVotes}>Reset Votes</button>
-          <NewSessionButton onNewSession={startNewSession} />
           <button onClick={endSession}>End Session</button>
         </>
       )}
