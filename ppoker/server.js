@@ -85,6 +85,22 @@ app.prepare().then(() => {
       }
     });
 
+    socket.on('resetVotes', (sessionId) => {
+      const session = sessions.get(sessionId);
+
+      if (session) {
+        // reset each user's vote and voting status
+        session.users.forEach((user) => {
+          user.vote = null;
+          user.hasVoted = false;
+        });
+        session.votesRevealed = false;
+
+        // broadcase the updated session to all clients in the session
+        io.to(sessionId).emit('sessionUpdate', session);
+      }
+    });
+
     // // send current session state to the newly connected user
     // socket.emit('sessionUpdate', {
     //   users: Object.values(users),
