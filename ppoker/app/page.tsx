@@ -8,8 +8,7 @@ import AverageDisplay from '@/components/AverageDisplay';
 import CardSelector from '../components/CardSelector';
 import RevealButton from '@/components/RevealButton';
 import VotesDisplay from '@/components/VotesDisplay';
-// import { User, VoteData, SessionUpdateData } from '@/utils/types';
-// below I removed VoteData, trying to do without this interface
+
 import { User, SessionUpdateData, Session } from '@/utils/types';
 
 const Home = () => {
@@ -60,34 +59,6 @@ const Home = () => {
       }
     );
   };
-
-  // useEffect(() => {
-  //   // listen for vote updates from the server
-  //   if (socket) {
-  //     const handleVoteUpdate = (data: VoteData) => {
-  //       setUsers((prevUsers) =>
-  //         prevUsers.map((user) =>
-  //           user.id === data.userId ? { ...user, vote: data.vote } : user
-  //         )
-  //       );
-  //     };
-
-  //     const handleSessionUpdate = (data: SessionUpdateData) => {
-  //       setUsers(data.users);
-  //       setVotesRevealed(data.votesRevealed);
-  //     };
-
-  //     // register event listeners
-  //     socket.on('voteUpdate', handleVoteUpdate);
-  //     socket.on('sessionUpdate', handleSessionUpdate);
-
-  //     // clean up listeners on unmount
-  //     return () => {
-  //       socket.off('voteUpdate', handleVoteUpdate);
-  //       socket.off('sessionUpdate', handleSessionUpdate);
-  //     };
-  //   }
-  // }, [socket]);
 
   useEffect(() => {
     // listen for vote updates from the server
