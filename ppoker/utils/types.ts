@@ -14,13 +14,6 @@ export interface Session {
 }
 
 // Event data types
-
-// TODO VoteData removed from page.tsx, review using it at all
-export interface VoteData {
-  userId: string;
-  vote: number;
-}
-
 export interface SessionUpdateData {
   users: User[];
   votesRevealed: boolean;
