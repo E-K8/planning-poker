@@ -1,4 +1,6 @@
-# Planning poker notes  
+# Planning poker notes
+
+## [DEPLOYMENT](https://ek8-planning-poker.vercel.app)
 
 ### Step 1: Define the Requirements
 
