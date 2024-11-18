@@ -8,7 +8,6 @@ import AverageDisplay from '@/components/AverageDisplay';
 import CardSelector from '../components/CardSelector';
 import RevealButton from '@/components/RevealButton';
 import VotesDisplay from '@/components/VotesDisplay';
-
 import { User, SessionUpdateData, Session } from '@/utils/types';
 
 const Home = () => {
@@ -31,18 +30,16 @@ const Home = () => {
     const storedUserName = localStorage.getItem('userName');
     if (storedUserName) {
       setUserName(storedUserName);
-    } else {
-      // prompt user for their name on initial load if it doesn't exist
-      const enteredName = prompt('Enter your name:');
-      if (enteredName) {
-        setUserName(enteredName);
-        localStorage.setItem('userName', enteredName);
-      }
     }
   }, []);
 
   // function to join a session
   const joinSession = (sessionId: string, userName: string) => {
+    if (!localStorage.getItem('userName')) {
+      localStorage.setItem('userName', userName);
+    }
+    setUserName(userName);
+
     socket?.emit(
       'createSession',
       { sessionId, userName },
@@ -64,7 +61,7 @@ const Home = () => {
     // listen for vote updates from the server
     if (socket) {
       const handleVoteUpdate = (data: { users: User[] }) => {
-        setUsers(data.users); // Update the entire list of users with hasVoted statuses
+        setUsers(data.users); // update the entire list of users with hasVoted statuses
       };
 
       const handleSessionUpdate = (data: SessionUpdateData) => {
