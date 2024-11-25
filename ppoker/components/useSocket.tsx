@@ -4,7 +4,9 @@ import { io, Socket } from 'socket.io-client';
 const useSocket = (): Socket | null => {
   const [socket, setSocket] = useState<Socket | null>(null);
   useEffect(() => {
-    const socketIo = io(); // Initialize socket.io connection
+    const socketIo = io('http://localhost:3000', {
+      withCredentials: true,
+    }); // Initialize socket.io connection
 
     setSocket(socketIo);
 
