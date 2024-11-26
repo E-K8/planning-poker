@@ -1,18 +1,14 @@
 {
-  "name": "ppoker",
+  "name": "ppoker-backend",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "node server.js"
   },
   "dependencies": {
-    "next": "14.2.14",
-    "react": "^18",
-    "react-dom": "^18",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
     "socket.io": "^4.8.0",
     "socket.io-client": "^4.8.0",
     "uuid": "^10.0.0"
