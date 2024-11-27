@@ -4,7 +4,7 @@ import { io, Socket } from 'socket.io-client';
 const useSocket = (): Socket | null => {
   const [socket, setSocket] = useState<Socket | null>(null);
   useEffect(() => {
-    const socketIo = io('http://localhost:3000', {
+    const socketIo = io('https://planning-poker-rpnu.onrender.com', {
       withCredentials: true,
     }); // Initialize socket.io connection
 

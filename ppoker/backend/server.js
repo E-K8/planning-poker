@@ -136,8 +136,6 @@ io.on('connection', (socket) => {
   //  handle disconnection
   socket.on('disconnect', () => {
     console.log('A user disconnected');
-
-    // TODO for future, consider removing user from session
   });
 });
 
