@@ -5,6 +5,21 @@ import cors from 'cors';
 
 // create an express app
 const app = express();
+
+app.get('/', (req, res) => {
+  res.send(`
+    <h1>Planning Poker Backend is running! 🎉</h1>
+    <a href="/status">VIEW STATUS</a>
+    `);
+});
+
+app.get('/status', (req, res) => {
+  res.json({
+    status: 'Backend is running',
+    timestamp: new Date(),
+  });
+});
+
 app.use(
   cors({
     origin: 'http://localhost:3001',
@@ -121,8 +136,6 @@ io.on('connection', (socket) => {
   //  handle disconnection
   socket.on('disconnect', () => {
     console.log('A user disconnected');
-
-    // TODO for future, consider removing user from session
   });
 });
 
