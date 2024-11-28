@@ -6,6 +6,11 @@ import cors from 'cors';
 // create an express app
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:3001',
+  'https://ek8-planning-poker.vercel.app',
+];
+
 app.get('/', (req, res) => {
   res.send(`
     <h1>Planning Poker Backend is running! 🎉</h1>
@@ -22,7 +27,7 @@ app.get('/status', (req, res) => {
 
 app.use(
   cors({
-    origin: 'http://localhost:3001',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true,
   })
@@ -35,7 +40,7 @@ const sessions = new Map();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3001',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true,
   },
