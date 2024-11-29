@@ -4,15 +4,31 @@ This is a little app inspired by processes at work. I wanted to create a simple 
 
 It's not finished yet, I'm making it public for deployment purposes.
 
-Frontend is with Vercel, backend will most likely be with Render.
+Frontend: Next JS, deployed on Vercel, backend: Node JS, deployed on Render. Free tier for both, so it may work inconsistently. I'd start backend first to check that it definitely runs, and frontend after that.
 
-## [DEPLOYMENT](https://ek8-planning-poker.vercel.app)
+##### [DEPLOYED BACKEND](https://planning-poker-rpnu.onrender.com)
 
-- palette I chose at the time: #073b4c #118ab2 #06d6a0 #ffd166 #ef476f. I'm keeping these on the page for some colour. The app is unstyled yet.
-- https://coolors.co/visualizer/ef476f-ffd166-06d6a0-118ab2-073b4c
+##### [DEPLOYED APP](https://ek8-planning-poker.vercel.app)
 
-### To run locally
+[Palette](https://coolors.co/visualizer/ef476f-ffd166-06d6a0-118ab2-073b4c) chosen in the beginning:
+#073b4c,
+#118ab2,
+#06d6a0,
+#ffd166,
+#ef476f.
 
+I'm keeping these on the page for some colour. The app is unstyled yet.
+
+### To run locally:
+
+#### Start backend
+
+    cd ppoker/backend
     npm i
+    npm start
+
+#### Start frontend
+
     cd ppoker
-    npm run dev
+    npm i
+    npm start
