@@ -4,6 +4,23 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.container-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.container-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .dark-blue {
   color: white;
   background-color: #073b4c;
