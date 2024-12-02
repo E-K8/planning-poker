@@ -3,7 +3,7 @@ const CardSelector = ({ onVote }: { onVote: (value: number) => void }) => {
   return (
     <div>
       {values.map((value) => (
-        <button key={value} onClick={() => onVote(value)}>
+        <button className='green' key={value} onClick={() => onVote(value)}>
           {value}
         </button>
       ))}

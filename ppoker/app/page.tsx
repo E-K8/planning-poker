@@ -132,8 +132,12 @@ const Home = () => {
             <VotesDisplay users={users} votesRevealed={votesRevealed} />
             <CardSelector onVote={handleVote} />
             <RevealButton onReveal={revealVotes} />
-            <button onClick={resetVotes}>Reset Votes</button>
-            <button onClick={endSession}>End Session</button>
+            <button className='dark-blue' onClick={resetVotes}>
+              Reset Votes
+            </button>
+            <button className='dark-blue' onClick={endSession}>
+              End Session
+            </button>
             <AverageDisplay users={users} />
           </>
         )}

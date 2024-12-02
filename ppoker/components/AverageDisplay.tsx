@@ -5,7 +5,7 @@ const AverageDisplay = ({ users }: { users: User[] }) => {
   const voteCount = users.filter((user) => user.vote !== null).length;
   const average = voteCount ? totalVotes / voteCount : 0;
 
-  return <div>Average: {average.toFixed(2)}</div>;
+  return <div className='red'>Average: {average.toFixed(2)}</div>;
 };
 
 export default AverageDisplay;
