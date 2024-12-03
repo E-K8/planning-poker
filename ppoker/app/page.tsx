@@ -123,26 +123,32 @@ const Home = () => {
   };
 
   return (
-    <div>
-      {/* show the form if not in a session */}
-      {!sessionId && <SessionForm onJoinSession={joinSession} />}
-      {sessionId && (
-        <>
-          <VotesDisplay users={users} votesRevealed={votesRevealed} />
-          <CardSelector onVote={handleVote} />
-          <RevealButton onReveal={revealVotes} />
-          <AverageDisplay users={users} />
-          <button onClick={resetVotes}>Reset Votes</button>
-          <button onClick={endSession}>End Session</button>
-        </>
-      )}
+    <div className='container-outer'>
+      <div className='container-inner'>
+        {/* show the form if not in a session */}
+        {!sessionId && <SessionForm onJoinSession={joinSession} />}
+        {sessionId && (
+          <>
+            <VotesDisplay users={users} votesRevealed={votesRevealed} />
+            <CardSelector onVote={handleVote} />
+            <RevealButton onReveal={revealVotes} />
+            <button className='dark-blue' onClick={resetVotes}>
+              Reset Votes
+            </button>
+            <button className='dark-blue' onClick={endSession}>
+              End Session
+            </button>
+            <AverageDisplay users={users} />
+          </>
+        )}
+      </div>
 
-      <p>Palette to consider: #073b4c #118ab2 #06d6a0 #ffd166 #ef476f</p>
+      {/* <p>Palette to consider: #073b4c #118ab2 #06d6a0 #ffd166 #ef476f</p>
       <p className='dark-blue'>dark blue</p>
       <p className='blue'>blue</p>
       <p className='green'>green</p>
       <p className='yellow'>yellow</p>
-      <p className='red'>red</p>
+      <p className='red'>red</p> */}
     </div>
   );
 };
