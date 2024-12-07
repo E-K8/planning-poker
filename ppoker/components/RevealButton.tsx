@@ -1,6 +1,6 @@
 const RevealButton = ({ onReveal }: { onReveal: () => void }) => {
   return (
-    <button className='dark-blue' onClick={onReveal}>
+    <button className='action-button reveal' onClick={onReveal}>
       Reveal Votes
     </button>
   );

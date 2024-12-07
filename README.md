@@ -17,7 +17,7 @@ Frontend: Next JS, deployed on Vercel, backend: Node JS, deployed on Render. Fre
 #ffd166,
 #ef476f.
 
-I'm keeping these on the page for some colour. The app is unstyled yet.
+I'm experimenting with those colours for now.
 
 ### To run locally:
 

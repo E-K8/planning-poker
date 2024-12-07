@@ -131,13 +131,15 @@ const Home = () => {
           <>
             <VotesDisplay users={users} votesRevealed={votesRevealed} />
             <CardSelector onVote={handleVote} />
-            <RevealButton onReveal={revealVotes} />
-            <button className='dark-blue' onClick={resetVotes}>
-              Reset Votes
-            </button>
-            <button className='dark-blue' onClick={endSession}>
-              End Session
-            </button>
+            <div className='container-buttons'>
+              <RevealButton onReveal={revealVotes} />
+              <button className='action-button reset' onClick={resetVotes}>
+                Reset Votes
+              </button>
+              <button className='action-button end' onClick={endSession}>
+                End Session
+              </button>
+            </div>
             <AverageDisplay users={users} />
           </>
         )}
