@@ -144,13 +144,6 @@ const Home = () => {
           </>
         )}
       </div>
-
-      {/* <p>Palette to consider: #073b4c #118ab2 #06d6a0 #ffd166 #ef476f</p>
-      <p className='dark-blue'>dark blue</p>
-      <p className='blue'>blue</p>
-      <p className='green'>green</p>
-      <p className='yellow'>yellow</p>
-      <p className='red'>red</p> */}
     </div>
   );
 };
