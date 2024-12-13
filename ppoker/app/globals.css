@@ -40,6 +40,19 @@ body {
   box-shadow: 0 4px 6px #0000001a;
 }
 
+.votes-display-container {
+  font-size: 1.5rem;
+  color: #073b4c;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.vote-revealed {
+  font-weight: 600;
+}
+
 .card-container {
   display: grid;
   gap: 1rem;
@@ -103,4 +116,22 @@ body {
 
 .action-button:hover {
   transform: scale(1.03);
+}
+
+.average-container {
+  background-color: #ef476f;
+  color: white;
+  padding: 0 1rem;
+  margin: 0.5rem auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.3rem 0.4rem #00000033;
+}
+
+.average-title {
+  font-size: 1.5rem;
+}
+
+.average-value {
+  font-size: 1.25rem;
+  font-weight: bold;
 }
