@@ -121,17 +121,19 @@ body {
 .average-container {
   background-color: #ef476f;
   color: white;
-  padding: 0 1rem;
+  padding: 0 0.2rem;
   margin: 0.5rem auto;
   border-radius: 0.5rem;
   box-shadow: 0 0.3rem 0.4rem #00000033;
 }
 
 .average-title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+  margin: 0.5rem 1rem;
 }
 
 .average-value {
-  font-size: 1.25rem;
+  margin: 0.5rem 1rem;
+  font-size: 1.4rem;
   font-weight: bold;
 }
