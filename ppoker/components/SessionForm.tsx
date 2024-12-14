@@ -16,8 +16,9 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className='form-container' onSubmit={handleSubmit}>
       <input
+        className='form-input'
         type='text'
         placeholder='Session ID'
         value={sessionId}
@@ -26,13 +27,17 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
       />
 
       <input
+        className='form-input'
         type='text'
         placeholder='Your Name'
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
         required
       />
-      <button type='submit'> Join Session</button>
+      <button className='action-button' type='submit'>
+        {' '}
+        Join Session
+      </button>
     </form>
   );
 };
