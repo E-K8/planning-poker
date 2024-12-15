@@ -140,7 +140,7 @@ const Home = () => {
                 End Session
               </button>
             </div>
-            <AverageDisplay users={users} />
+            {votesRevealed && <AverageDisplay users={users} />}
           </>
         )}
       </div>
