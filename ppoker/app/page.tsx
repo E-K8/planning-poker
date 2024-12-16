@@ -96,10 +96,22 @@ const Home = () => {
     }
   };
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   // reveal the votes
   const revealVotes = () => {
+    // check if any user has voted
+    const hasVotes = users.some((user) => user.vote !== null);
+    if (!hasVotes) {
+      setErrorMessage(
+        'Votes cannot be revealed until at least one user has voted'
+      );
+      return;
+    }
+
     if (sessionId) {
       socket?.emit('revealVotes', sessionId);
+      setErrorMessage(null);
     }
   };
 
@@ -133,6 +145,7 @@ const Home = () => {
             <CardSelector onVote={handleVote} />
             <div className='container-buttons'>
               <RevealButton onReveal={revealVotes} />
+              {errorMessage && <p className='error-message'>{errorMessage}</p>}
               <button className='action-button reset' onClick={resetVotes}>
                 Reset Votes
               </button>
