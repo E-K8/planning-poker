@@ -67,19 +67,27 @@ const Home = () => {
       const handleSessionUpdate = (data: SessionUpdateData) => {
         setUsers(data.users);
         setVotesRevealed(data.votesRevealed);
+        setErrorMessage(null);
       };
 
-      // register event listeners
+      // clear the Reveal Votes error message
+      const handleClearRevealError = () => {
+        setErrorMessage(null); //reset the error message for all clients
+      };
+
+      // register socket event listeners
       socket.on('voteUpdate', handleVoteUpdate);
       socket.on('sessionUpdate', handleSessionUpdate);
+      socket.on('clearRevealError', handleClearRevealError);
       socket.on('sessionEnded', () => {
         resetClientState();
       });
 
-      // clean up listeners on unmount
+      // clean up listeners on component unmount
       return () => {
         socket.off('voteUpdate', handleVoteUpdate);
         socket.off('sessionUpdate', handleSessionUpdate);
+        socket.off('clearRevealError', handleClearRevealError);
         socket.off('sessionEnded');
       };
     }

@@ -103,6 +103,7 @@ io.on('connection', (socket) => {
     if (session) {
       session.votesRevealed = true;
       io.to(sessionId).emit('sessionUpdate', session);
+      io.to(sessionId).emit('clearRevealError');
     }
   });
 
