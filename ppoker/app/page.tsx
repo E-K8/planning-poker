@@ -67,19 +67,27 @@ const Home = () => {
       const handleSessionUpdate = (data: SessionUpdateData) => {
         setUsers(data.users);
         setVotesRevealed(data.votesRevealed);
+        setErrorMessage(null);
       };
 
-      // register event listeners
+      // clear the Reveal Votes error message
+      const handleClearRevealError = () => {
+        setErrorMessage(null); //reset the error message for all clients
+      };
+
+      // register socket event listeners
       socket.on('voteUpdate', handleVoteUpdate);
       socket.on('sessionUpdate', handleSessionUpdate);
+      socket.on('clearRevealError', handleClearRevealError);
       socket.on('sessionEnded', () => {
         resetClientState();
       });
 
-      // clean up listeners on unmount
+      // clean up listeners on component unmount
       return () => {
         socket.off('voteUpdate', handleVoteUpdate);
         socket.off('sessionUpdate', handleSessionUpdate);
+        socket.off('clearRevealError', handleClearRevealError);
         socket.off('sessionEnded');
       };
     }
@@ -96,10 +104,22 @@ const Home = () => {
     }
   };
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   // reveal the votes
   const revealVotes = () => {
+    // check if any user has voted
+    const hasVotes = users.some((user) => user.vote !== null);
+    if (!hasVotes) {
+      setErrorMessage(
+        'Votes cannot be revealed until at least one user has voted'
+      );
+      return;
+    }
+
     if (sessionId) {
       socket?.emit('revealVotes', sessionId);
+      setErrorMessage(null);
     }
   };
 
@@ -133,6 +153,7 @@ const Home = () => {
             <CardSelector onVote={handleVote} />
             <div className='container-buttons'>
               <RevealButton onReveal={revealVotes} />
+              {errorMessage && <p className='error-message'>{errorMessage}</p>}
               <button className='action-button reset' onClick={resetVotes}>
                 Reset Votes
               </button>

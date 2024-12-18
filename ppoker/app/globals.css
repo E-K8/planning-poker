@@ -23,6 +23,13 @@ body {
   background-color: #ef476f;
 }
 
+.error-message {
+  color: red;
+  font-weight: bold;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
 .container-outer {
   display: flex;
   justify-content: center;
