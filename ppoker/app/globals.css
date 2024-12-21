@@ -62,6 +62,10 @@ body {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+select.form-input {
+  padding: 0 0.5rem;
+}
+
 .form-input:focus {
   border-color: #073b4c;
   box-shadow: 0 0 8px #118ab280;

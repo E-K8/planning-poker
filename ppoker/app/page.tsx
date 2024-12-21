@@ -34,7 +34,11 @@ const Home = () => {
   }, []);
 
   // function to join a session
-  const joinSession = (sessionId: string, userName: string) => {
+  const joinSession = (
+    sessionId: string,
+    userName: string,
+    role: 'Dev' | 'QA'
+  ) => {
     if (!localStorage.getItem('userName')) {
       localStorage.setItem('userName', userName);
     }
@@ -42,7 +46,7 @@ const Home = () => {
 
     socket?.emit(
       'createSession',
-      { sessionId, userName },
+      { sessionId, userName, role },
       (response: { userId: string; session: Session }) => {
         console.log("Response from 'createSession' event:", response);
 
