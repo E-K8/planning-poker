@@ -91,6 +91,7 @@ io.on('connection', (socket) => {
       if (user) {
         user.vote = vote;
         user.hasVoted = true;
+        console.log(`User ${userId.name} voted: ${user.vote}`);
       }
 
       // broadcast the updated user list to all users in the room
