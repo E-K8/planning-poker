@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
   console.log('A user connected');
 
   // handle joining or creating a session
-  socket.on('createSession', ({ sessionId, userName }, callback) => {
+  socket.on('createSession', ({ sessionId, userName, role }, callback) => {
     if (!sessions.has(sessionId)) {
       sessions.set(sessionId, {
         sessionId,
@@ -62,12 +62,13 @@ io.on('connection', (socket) => {
     const session = sessions.get(sessionId);
     const userId = socket.id; // use socket.id as the unique user idenfifier
 
-    // add the user to the session
+    // add the user to the session with their role
     session.users.push({
       id: userId,
       name: userName,
       vote: null,
       hasVoted: false,
+      role,
     });
 
     // join the user to the session room
