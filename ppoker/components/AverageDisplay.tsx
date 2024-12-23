@@ -9,6 +9,10 @@ const AverageDisplay = ({ users }: { users: User[] }) => {
     (user) => user.role === 'QA' && user.vote !== null
   );
 
+  console.log('All users:', users);
+  console.log('Dev Votes:', devVotes);
+  console.log('QA Votes:', qaVotes);
+
   const devAverage =
     devVotes.length > 0
       ? devVotes.reduce((sum, user) => sum + (user.vote ?? 0), 0) /
@@ -20,6 +24,9 @@ const AverageDisplay = ({ users }: { users: User[] }) => {
       ? qaVotes.reduce((sum, user) => sum + (user.vote ?? 0), 0) /
         qaVotes.length
       : 0;
+
+  console.log('Dev Average:', devAverage);
+  console.log('QA Average:', qaAverage);
 
   return (
     <div className='average-container'>

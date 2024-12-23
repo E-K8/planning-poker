@@ -63,18 +63,25 @@ io.on('connection', (socket) => {
     const userId = socket.id; // use socket.id as the unique user idenfifier
 
     // add the user to the session with their role
-    session.users.push({
+    const newUser = {
       id: userId,
       name: userName,
       vote: null,
       hasVoted: false,
       role,
-    });
+    };
+
+    console.log('Adding user to session:', newUser);
+
+    session.users.push(newUser);
+
+    console.log(`User joined session: ${userName}, Role: ${role}`);
 
     // join the user to the session room
     socket.join(sessionId);
 
     console.log('Session created or joined:', session);
+    console.log('Session after adding user:', session);
 
     // send the session state back to the client
     callback({ userId, session });
