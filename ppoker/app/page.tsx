@@ -56,6 +56,8 @@ const Home = () => {
           setUserId(response.userId);
           setSessionId(response.session.sessionId);
           setUsers(response.session.users);
+
+          console.log('Users after joining session:', response.session.users);
         } else {
           console.log('Failed to join session. Response data missing.');
         }

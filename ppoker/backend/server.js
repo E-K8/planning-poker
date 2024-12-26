@@ -80,13 +80,12 @@ io.on('connection', (socket) => {
     // join the user to the session room
     socket.join(sessionId);
 
-    console.log('Session created or joined:', session);
     console.log('Session after adding user:', session);
 
     // send the session state back to the client
     callback({ userId, session });
 
-    // broadcast the updated session to all users in the room
+    // broadcast the updated session to all users in the session
     io.to(sessionId).emit('sessionUpdate', session);
   });
 
@@ -98,10 +97,12 @@ io.on('connection', (socket) => {
       if (user) {
         user.vote = vote;
         user.hasVoted = true;
-        console.log(`User ${userId.name} voted: ${user.vote}`);
       }
 
-      // broadcast the updated user list to all users in the room
+      console.log(`User ${userId.name} voted: ${user.vote}`);
+      console.log('Updated session users: ', session.users);
+
+      // broadcast the updated user list to all users in the session
       io.to(sessionId).emit('voteUpdate', { users: session.users });
     }
   });
