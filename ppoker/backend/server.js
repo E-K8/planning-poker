@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
   console.log('A user connected');
 
   // handle joining or creating a session
-  socket.on('createSession', ({ sessionId, userName }, callback) => {
+  socket.on('createSession', ({ sessionId, userName, role }, callback) => {
     if (!sessions.has(sessionId)) {
       sessions.set(sessionId, {
         sessionId,
@@ -62,23 +62,30 @@ io.on('connection', (socket) => {
     const session = sessions.get(sessionId);
     const userId = socket.id; // use socket.id as the unique user idenfifier
 
-    // add the user to the session
-    session.users.push({
+    // add the user to the session with their role
+    const newUser = {
       id: userId,
       name: userName,
       vote: null,
       hasVoted: false,
-    });
+      role,
+    };
+
+    console.log('Adding user to session:', newUser);
+
+    session.users.push(newUser);
+
+    console.log(`User joined session: ${userName}, Role: ${role}`);
 
     // join the user to the session room
     socket.join(sessionId);
 
-    console.log('Session created or joined:', session);
+    console.log('Session after adding user:', session);
 
     // send the session state back to the client
     callback({ userId, session });
 
-    // broadcast the updated session to all users in the room
+    // broadcast the updated session to all users in the session
     io.to(sessionId).emit('sessionUpdate', session);
   });
 
@@ -92,7 +99,10 @@ io.on('connection', (socket) => {
         user.hasVoted = true;
       }
 
-      // broadcast the updated user list to all users in the room
+      console.log(`User ${userId.name} voted: ${user.vote}`);
+      console.log('Updated session users: ', session.users);
+
+      // broadcast the updated user list to all users in the session
       io.to(sessionId).emit('voteUpdate', { users: session.users });
     }
   });

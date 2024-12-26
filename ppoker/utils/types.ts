@@ -4,6 +4,7 @@ export type User = {
   name: string;
   vote: number | null;
   hasVoted: boolean;
+  role: 'Dev' | 'QA';
 };
 
 // Session-related types

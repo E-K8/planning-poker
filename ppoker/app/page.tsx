@@ -34,15 +34,21 @@ const Home = () => {
   }, []);
 
   // function to join a session
-  const joinSession = (sessionId: string, userName: string) => {
+  const joinSession = (
+    sessionId: string,
+    userName: string,
+    role: 'Dev' | 'QA'
+  ) => {
     if (!localStorage.getItem('userName')) {
       localStorage.setItem('userName', userName);
     }
     setUserName(userName);
 
+    console.log('Joining session with:', { sessionId, userName, role });
+
     socket?.emit(
       'createSession',
-      { sessionId, userName },
+      { sessionId, userName, role },
       (response: { userId: string; session: Session }) => {
         console.log("Response from 'createSession' event:", response);
 
@@ -50,6 +56,8 @@ const Home = () => {
           setUserId(response.userId);
           setSessionId(response.session.sessionId);
           setUsers(response.session.users);
+
+          console.log('Users after joining session:', response.session.users);
         } else {
           console.log('Failed to join session. Response data missing.');
         }
@@ -61,6 +69,7 @@ const Home = () => {
     // listen for vote updates from the server
     if (socket) {
       const handleVoteUpdate = (data: { users: User[] }) => {
+        console.log('Updated users from server:', data.users);
         setUsers(data.users); // update the entire list of users with hasVoted statuses
       };
 

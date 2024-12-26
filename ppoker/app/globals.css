@@ -56,16 +56,26 @@ body {
 
 .form-input {
   height: 2rem;
+  padding: 0 0.3rem;
   border: 2px solid #118ab2;
   border-radius: 0.4rem;
   box-shadow: 0 4px 6px #00000033;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+select.form-input {
+  height: 2.3rem;
+  padding: 0 0.3rem;
+}
+
 .form-input:focus {
   border-color: #073b4c;
   box-shadow: 0 0 8px #118ab280;
   outline: none;
+}
+
+select:invalid {
+  color: #757575;
 }
 
 @media (min-width: 561px) {
