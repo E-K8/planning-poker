@@ -11,7 +11,7 @@ const VotesDisplay = ({
     <div className='votes-display-container'>
       {users.map((user) => (
         <div key={user.id}>
-          <span>{`${user.name || user.id}: `}</span>
+          <span>{`${user.name} (${user.role}) : `}</span>
           {votesRevealed ? (
             <span className='vote-revealed'>
               {user.vote !== null ? user.vote : '?'}
