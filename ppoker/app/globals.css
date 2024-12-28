@@ -172,12 +172,12 @@ select:invalid {
 }
 
 .average-title {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   margin: 0.5rem 1rem;
 }
 
 .average-value {
   margin: 0.5rem 1rem;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: bold;
 }
