@@ -85,12 +85,21 @@ select:invalid {
 }
 
 .votes-display-container {
+  display: flex;
+  gap: 2rem;
+  /* flex-direction: column; */
+  align-items: start;
   font-size: 1.5rem;
   color: #073b4c;
   font-weight: 500;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
+}
+
+.role-column {
+  flex: 1;
+}
+
+.role-column h3 {
+  margin-bottom: 0.5rem;
 }
 
 .vote-revealed {
