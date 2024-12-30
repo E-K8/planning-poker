@@ -98,8 +98,8 @@ select:invalid {
   flex: 1;
 }
 
-.role-column h3 {
-  margin-bottom: 0.5rem;
+.role-column h4 {
+  margin: 0.5rem;
 }
 
 .vote-revealed {
@@ -174,8 +174,8 @@ select:invalid {
 .average-container {
   background-color: #ef476f;
   color: white;
-  padding: 0 0.2rem;
-  margin: 0.5rem auto;
+  padding: 0.2rem;
+  margin: 0.8rem auto;
   border-radius: 0.5rem;
   box-shadow: 0 0.3rem 0.4rem #00000033;
 }

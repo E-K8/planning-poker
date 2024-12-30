@@ -13,7 +13,7 @@ const VotesDisplay = ({
   return (
     <div className='votes-display-container'>
       <div className='role-column'>
-        <h3>Devs</h3>
+        <h4>Dev votes</h4>
         {devUsers.map((user) => (
           <div key={user.id}>
             <span> {`${user.name} (${user.role}) : `}</span>
@@ -29,7 +29,7 @@ const VotesDisplay = ({
       </div>
 
       <div className='role-column'>
-        <h3>QAs</h3>
+        <h4>QA votes</h4>
         {qaUsers.map((user) => (
           <div key={user.id}>
             <span> {`${user.name} (${user.role}) : `}</span>
