@@ -7,20 +7,42 @@ const VotesDisplay = ({
   users: User[];
   votesRevealed: boolean;
 }) => {
+  const devUsers = users.filter((user) => user.role === 'Dev');
+  const qaUsers = users.filter((user) => user.role === 'QA');
+
   return (
     <div className='votes-display-container'>
-      {users.map((user) => (
-        <div key={user.id}>
-          <span>{`${user.name} (${user.role}) : `}</span>
-          {votesRevealed ? (
-            <span className='vote-revealed'>
-              {user.vote !== null ? user.vote : '?'}
-            </span> //show vote if revealed
-          ) : (
-            <span>{user.hasVoted ? '✔️' : '?'} </span> // show checkmark if user has voted
-          )}
-        </div>
-      ))}
+      <div className='role-column'>
+        <h4>Dev votes</h4>
+        {devUsers.map((user) => (
+          <div key={user.id}>
+            <span> {`${user.name} (${user.role}) : `}</span>
+            {votesRevealed ? (
+              <span className='vote-revealed'>
+                {user.vote !== null ? user.vote : '?'}
+              </span>
+            ) : (
+              <span>{user.hasVoted ? '✔️' : '?'}</span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className='role-column'>
+        <h4>QA votes</h4>
+        {qaUsers.map((user) => (
+          <div key={user.id}>
+            <span> {`${user.name} (${user.role}) : `}</span>
+            {votesRevealed ? (
+              <span className='vote-revealed'>
+                {user.vote !== null ? user.vote : '?'}
+              </span>
+            ) : (
+              <span>{user.hasVoted ? '✔️' : '?'}</span>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
