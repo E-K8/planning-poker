@@ -120,9 +120,7 @@ const Home = () => {
     // check if any user has voted
     const hasVotes = users.some((user) => user.vote !== null);
     if (!hasVotes) {
-      setErrorMessage(
-        'Votes cannot be revealed until at least one user has voted'
-      );
+      setErrorMessage('At least one user must vote to enable reveal');
       return;
     }
 
