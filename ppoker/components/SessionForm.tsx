@@ -14,16 +14,9 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
   const [role, setRole] = useState<string>(''); // initially empty
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!role) {
-      setErrorMessage('Please select a role');
-      return;
-    }
-    setErrorMessage(null);
     onJoinSession(sessionId, userName, role as 'Dev' | 'QA');
   };
 
@@ -59,7 +52,6 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
         <option value='Dev'>Dev</option>
         <option value='QA'>QA</option>
       </select>
-      {errorMessage && <p className='error-message'>{errorMessage}</p>}
 
       <button className='action-button' type='submit'>
         Join Session
