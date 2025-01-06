@@ -13,11 +13,19 @@ interface SessionFormProps {
 const SessionForm = ({ onJoinSession }: SessionFormProps) => {
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
-  const [role, setRole] = useState<string>(''); // initially empty
+  const [role, setRole] = useState<string>('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onJoinSession(sessionId, userName, role as 'Dev' | 'QA');
+    setLoading(true);
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      onJoinSession(sessionId, userName, role as 'Dev' | 'QA');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +37,7 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
         value={sessionId}
         onChange={(e) => setSessionId(e.target.value)}
         required
+        disabled={loading} // disable the input while loading
       />
 
       <input
@@ -38,6 +47,7 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
         required
+        disabled={loading} // disable the input while loading
       />
 
       <select
@@ -45,6 +55,7 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
         value={role}
         onChange={(e) => setRole(e.target.value)}
         required
+        disabled={loading} // disable select while loading
       >
         <option value='' disabled>
           Your role
@@ -53,9 +64,11 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
         <option value='QA'>QA</option>
       </select>
 
-      <button className='action-button' type='submit'>
-        Join Session
+      <button className='action-button' type='submit' disabled={loading}>
+        {loading ? 'Joining' : 'Join Session'}
       </button>
+
+      {loading && <p className='loading-indicator'>Joining session...</p>}
     </form>
   );
 };
