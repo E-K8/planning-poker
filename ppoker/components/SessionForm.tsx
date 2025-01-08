@@ -37,7 +37,7 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
         value={sessionId}
         onChange={(e) => setSessionId(e.target.value)}
         required
-        disabled={loading} // disable the input while loading
+        disabled={loading}
       />
 
       <input
@@ -47,7 +47,7 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
         required
-        disabled={loading} // disable the input while loading
+        disabled={loading}
       />
 
       <select
@@ -55,7 +55,7 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
         value={role}
         onChange={(e) => setRole(e.target.value)}
         required
-        disabled={loading} // disable select while loading
+        disabled={loading}
       >
         <option value='' disabled>
           Your role
@@ -65,10 +65,8 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
       </select>
 
       <button className='action-button' type='submit' disabled={loading}>
-        {loading ? 'Joining' : 'Join Session'}
+        {loading ? <div className='spinner'></div> : 'Join Session'}
       </button>
-
-      {loading && <p className='loading-indicator'>Joining session...</p>}
     </form>
   );
 };
