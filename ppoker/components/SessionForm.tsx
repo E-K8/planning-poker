@@ -6,7 +6,8 @@ interface SessionFormProps {
   onJoinSession: (
     sessionId: string,
     userName: string,
-    role: 'Dev' | 'QA'
+    role: 'Dev' | 'QA',
+    setLoading: (loading: boolean) => void // pass loading control to parent function
   ) => void;
 }
 
@@ -20,12 +21,7 @@ const SessionForm = ({ onJoinSession }: SessionFormProps) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      onJoinSession(sessionId, userName, role as 'Dev' | 'QA');
-    } finally {
-      setLoading(false);
-    }
+    onJoinSession(sessionId, userName, role as 'Dev' | 'QA', setLoading);
   };
 
   return (
