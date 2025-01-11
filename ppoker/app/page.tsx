@@ -37,7 +37,8 @@ const Home = () => {
   const joinSession = (
     sessionId: string,
     userName: string,
-    role: 'Dev' | 'QA'
+    role: 'Dev' | 'QA',
+    setLoading: (loading: boolean) => void
   ) => {
     if (!localStorage.getItem('userName')) {
       localStorage.setItem('userName', userName);
@@ -52,14 +53,18 @@ const Home = () => {
       (response: { userId: string; session: Session }) => {
         console.log("Response from 'createSession' event:", response);
 
-        if (response && response.session && response.userId) {
-          setUserId(response.userId);
-          setSessionId(response.session.sessionId);
-          setUsers(response.session.users);
-
-          console.log('Users after joining session:', response.session.users);
-        } else {
-          console.log('Failed to join session. Response data missing.');
+        try {
+          if (response && response.session && response.userId) {
+            setUserId(response.userId);
+            setSessionId(response.session.sessionId);
+            setUsers(response.session.users);
+          } else {
+            throw new Error('Response data missing.');
+          }
+        } catch (error) {
+          console.error('Failed to join session:', error);
+        } finally {
+          setLoading(false); // stop spinner in any case (success or failure)
         }
       }
     );
