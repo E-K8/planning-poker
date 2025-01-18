@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
     "start": "next start",
+    "test": "playwright test",
+    "build": "next build",
     "lint": "next lint"
   },
   "dependencies": {
