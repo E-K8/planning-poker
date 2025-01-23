@@ -1,6 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Session Form', () => {
+  test.afterEach(async ({ page }) => {
+    // only try to end the session if we're in one
+    const endSessionButton = page.getByRole('button', { name: 'End Session' });
+    if (await endSessionButton.isVisible()) {
+      await endSessionButton.click();
+    }
+  });
+
   test('should join a session successfully', async ({ page }) => {
     await page.goto('/');
 

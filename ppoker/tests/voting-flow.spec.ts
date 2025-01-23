@@ -17,6 +17,10 @@ test.describe('Voting Flow', () => {
     ).toBeVisible();
   });
 
+  test.afterEach(async ({ page }) => {
+    await page.getByRole('button', { name: 'End Session' }).click();
+  });
+
   test('should cast vote and reveal results with averages', async ({
     page,
   }) => {
@@ -30,12 +34,12 @@ test.describe('Voting Flow', () => {
 
     await page.waitForTimeout(500);
 
-    // Click Reveal Votes
+    // reveal votes
     await page.getByRole('button', { name: 'Reveal Votes' }).click();
 
     await page.waitForTimeout(500);
 
-    // Verify average display becomes visible
+    // verify average display becomes visible
     await expect(page.getByRole('heading', { name: 'Results:' })).toBeVisible();
     await expect(page.getByText('Dev Average:')).toBeVisible();
     await expect(page.getByText('QA Average:')).toBeVisible();
