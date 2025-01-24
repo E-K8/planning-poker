@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Voting Flow', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.fill('input[placeholder="Session ID"]', 'test-session');
+    await page.fill('input[placeholder="Session ID"]', 'test-session-voting');
     await page.fill('input[placeholder="Your Name"]', 'Code Wizard');
     await page.selectOption('select.form-input', { label: 'Dev' });
     await page.click('button:has-text("Join Session")');
@@ -15,6 +15,10 @@ test.describe('Voting Flow', () => {
     await expect(
       page.getByRole('heading', { name: 'Dev votes' })
     ).toBeVisible();
+  });
+
+  test.afterEach(async ({ page }) => {
+    await page.getByRole('button', { name: 'End Session' }).click();
   });
 
   test('should cast vote and reveal results with averages', async ({
@@ -30,12 +34,12 @@ test.describe('Voting Flow', () => {
 
     await page.waitForTimeout(500);
 
-    // Click Reveal Votes
+    // reveal votes
     await page.getByRole('button', { name: 'Reveal Votes' }).click();
 
     await page.waitForTimeout(500);
 
-    // Verify average display becomes visible
+    // verify average display becomes visible
     await expect(page.getByRole('heading', { name: 'Results:' })).toBeVisible();
     await expect(page.getByText('Dev Average:')).toBeVisible();
     await expect(page.getByText('QA Average:')).toBeVisible();
