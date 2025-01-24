@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Voting Flow', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.fill('input[placeholder="Session ID"]', 'test-session');
+    await page.fill('input[placeholder="Session ID"]', 'test-session-voting');
     await page.fill('input[placeholder="Your Name"]', 'Code Wizard');
     await page.selectOption('select.form-input', { label: 'Dev' });
     await page.click('button:has-text("Join Session")');

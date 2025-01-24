@@ -12,7 +12,7 @@ test.describe('Session Form', () => {
   test('should join a session successfully', async ({ page }) => {
     await page.goto('/');
 
-    await page.fill('input[placeholder="Session ID"]', 'test-session');
+    await page.fill('input[placeholder="Session ID"]', 'test-session-form');
     await page.fill('input[placeholder="Your Name"]', 'Code Wizard');
 
     await page.selectOption('select.form-input', { label: 'Dev' });
