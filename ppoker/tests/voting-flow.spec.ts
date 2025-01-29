@@ -81,4 +81,23 @@ test.describe('Voting Flow', () => {
     // verify question mark appears next to the user name
     await expect(page.getByText('Code Wizard (Dev) : ?')).toBeVisible();
   });
+
+  test('should show error message when revealing votes before casting any', async ({
+    page,
+  }) => {
+    // try to reveal votes immediately (without casting any votes)
+    await page.getByRole('button', { name: 'Reveal Votes' }).click();
+
+    // verify error message appears
+    await expect(
+      page.getByText('At least one user must vote to enable reveal')
+    ).toBeVisible();
+
+    // verify that Results are still not visible
+    await expect(
+      page.getByRole('heading', { name: 'Results:' })
+    ).not.toBeVisible();
+    await expect(page.getByText('Dev Average:')).not.toBeVisible();
+    await expect(page.getByText('QA Average:')).not.toBeVisible();
+  });
 });
