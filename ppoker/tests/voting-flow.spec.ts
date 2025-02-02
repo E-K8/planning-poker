@@ -100,4 +100,59 @@ test.describe('Voting Flow', () => {
     await expect(page.getByText('Dev Average:')).not.toBeVisible();
     await expect(page.getByText('QA Average:')).not.toBeVisible();
   });
+
+  test('should handle multiple users voting correctly', async ({ browser }) => {
+    // create two contexts for two different users
+    const devContext = await browser.newContext();
+    const qaContext = await browser.newContext();
+
+    // create pages for both users
+    const devPage = await devContext.newPage();
+    const qaPage = await qaContext.newPage();
+
+    // first user (Dev) joins
+    await devPage.goto('/');
+    await devPage.fill(
+      'input[placeholder="Session ID"]',
+      'test-session-multi-user'
+    );
+    await devPage.fill('input[placeholder="Your Name"]', 'Dev User');
+    await devPage.selectOption('select.form-input', { label: 'Dev' });
+    await devPage.click('button:has-text("Join Session")');
+
+    // second user (QA) joins the same session
+    await qaPage.goto('/');
+    await qaPage.fill(
+      'input[placeholder="Session ID"]',
+      'test-session-multi-user'
+    );
+    await qaPage.fill('input[placeholder="Your Name"]', 'QA User');
+    await qaPage.selectOption('select.form-input', { label: 'QA' });
+    await qaPage.click('button:has-text("Join Session")');
+
+    // wait for both users to be visible in the session
+    await expect(devPage.getByText('QA User (QA)')).toBeVisible();
+    await expect(qaPage.getByText('Dev User (Dev)')).toBeVisible();
+
+    // both users cast votes
+    await devPage.getByRole('button', { name: '5', exact: true }).click();
+    await qaPage.getByRole('button', { name: '3', exact: true }).click();
+
+    // verify vote indicators appear for both users
+    await expect(devPage.getByText('Dev User (Dev) : ✔️')).toBeVisible();
+    await expect(devPage.getByText('QA User (QA) : ✔️')).toBeVisible();
+
+    // reveal votes
+    await devPage.getByRole('button', { name: 'Reveal Votes' }).click();
+
+    // verify votes are revealed on both screens
+    await expect(devPage.getByText('Dev User (Dev) : 5')).toBeVisible();
+    await expect(devPage.getByText('QA User (QA) : 3')).toBeVisible();
+    await expect(qaPage.getByText('Dev User (Dev) : 5')).toBeVisible();
+    await expect(qaPage.getByText('QA User (QA) : 3')).toBeVisible();
+
+    // сlean up by closing contexts
+    await devContext.close();
+    await qaContext.close();
+  });
 });
