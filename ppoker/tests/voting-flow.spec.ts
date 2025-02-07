@@ -155,4 +155,52 @@ test.describe('Voting Flow', () => {
     await devContext.close();
     await qaContext.close();
   });
+
+  test('should calculate correct averages for multiple users voting', async ({
+    browser,
+  }) => {
+    const devContext = await browser.newContext();
+    const qaContext = await browser.newContext();
+    const devPage = await devContext.newPage();
+    const qaPage = await qaContext.newPage();
+
+    // Dev user joins
+    await devPage.goto('/');
+    await devPage.fill(
+      'input[placeholder="Session ID"]',
+      'test-session-averages'
+    );
+    await devPage.fill('input[placeholder="Your Name"]', 'Dev User 1');
+    await devPage.selectOption('select.form-input', { label: 'Dev' });
+    await devPage.click('button:has-text("Join Session")');
+
+    // QA user joins
+    await qaPage.goto('/');
+    await qaPage.fill(
+      'input[placeholder="Session ID"]',
+      'test-session-averages'
+    );
+    await qaPage.fill('input[placeholder="Your Name"]', 'QA User');
+    await qaPage.selectOption('select.form-input', { label: 'QA' });
+    await qaPage.click('button:has-text("Join Session")');
+
+    // cast votes: Dev votes 8, QA votes 4
+    await devPage.getByRole('button', { name: '8', exact: true }).click();
+    await qaPage.getByRole('button', { name: '4', exact: true }).click();
+
+    // reveal votes
+    await devPage.getByRole('button', { name: 'Reveal Votes' }).click();
+
+    // verify averages
+    await expect(devPage.getByText('Dev Average: 8.00')).toBeVisible();
+    await expect(devPage.getByText('QA Average: 4.00')).toBeVisible();
+
+    // verify averages are same on QA's screen
+    await expect(qaPage.getByText('Dev Average: 8.00')).toBeVisible();
+    await expect(qaPage.getByText('QA Average: 4.00')).toBeVisible();
+
+    // clean up
+    await devContext.close();
+    await qaContext.close();
+  });
 });
