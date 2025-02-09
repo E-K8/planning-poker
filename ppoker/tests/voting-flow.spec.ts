@@ -49,7 +49,39 @@ test.describe('Voting Flow', () => {
   });
 
   test.afterEach(async ({ page }) => {
-    await page.getByRole('button', { name: 'End Session' }).click();
+    // for single user tests
+    if (page) {
+      try {
+        const endButton = page.getByRole('button', { name: 'End Session' });
+        if (await endButton.isVisible()) {
+          await endButton.click();
+        }
+      } catch {
+        console.log('Single page cleanup attempted');
+      }
+    }
+
+    // for multi-user tests
+    for (const page of pagesToCleanup) {
+      try {
+        const endButton = page.getByRole('button', { name: 'End Session' });
+        if (await endButton.isVisible()) {
+          await endButton.click();
+          await page.waitForTimeout(1000);
+        }
+      } catch {
+        console.log('Multi page cleanup attempted');
+      }
+    }
+
+    // clean up contexts
+    for (const context of contextsToCleanup) {
+      await context.close();
+    }
+
+    // reset arrays for next test
+    pagesToCleanup.length = 0;
+    contextsToCleanup.length = 0;
   });
 
   test('should cast vote and reveal results with averages', async ({
