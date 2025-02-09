@@ -1,6 +1,29 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, BrowserContext, Page } from '@playwright/test';
+
+// keep track of context and page for cleanup
+const contextsToCleanup: BrowserContext[] = [];
+const pagesToCleanup: Page[] = [];
 
 test.describe('Voting Flow', () => {
+  async function createUserSession(
+    context: BrowserContext,
+    sessionId: string,
+    userName: string,
+    role: 'Dev' | 'QA'
+  ): Promise<Page> {
+    const page = await context.newPage();
+    // add page to cleanup list
+    pagesToCleanup.push(page);
+    contextsToCleanup.push(context);
+
+    await page.goto('/');
+    await page.fill('input[placeholder="Session ID"]', sessionId);
+    await page.fill('input[placeholder="Your Name"]', userName);
+    await page.selectOption('select.form-input', { label: role });
+    await page.click('button:has-text("Join Session")');
+    return page;
+  }
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
 
@@ -107,28 +130,18 @@ test.describe('Voting Flow', () => {
     const qaContext = await browser.newContext();
 
     // create pages for both users
-    const devPage = await devContext.newPage();
-    const qaPage = await qaContext.newPage();
-
-    // first user (Dev) joins
-    await devPage.goto('/');
-    await devPage.fill(
-      'input[placeholder="Session ID"]',
-      'test-session-multi-user'
+    const devPage = await createUserSession(
+      devContext,
+      'test-session-multi-user',
+      'Dev User',
+      'Dev'
     );
-    await devPage.fill('input[placeholder="Your Name"]', 'Dev User');
-    await devPage.selectOption('select.form-input', { label: 'Dev' });
-    await devPage.click('button:has-text("Join Session")');
-
-    // second user (QA) joins the same session
-    await qaPage.goto('/');
-    await qaPage.fill(
-      'input[placeholder="Session ID"]',
-      'test-session-multi-user'
+    const qaPage = await createUserSession(
+      qaContext,
+      'test-session-multi-user',
+      'QA User',
+      'QA'
     );
-    await qaPage.fill('input[placeholder="Your Name"]', 'QA User');
-    await qaPage.selectOption('select.form-input', { label: 'QA' });
-    await qaPage.click('button:has-text("Join Session")');
 
     // wait for both users to be visible in the session
     await expect(devPage.getByText('QA User (QA)')).toBeVisible();
