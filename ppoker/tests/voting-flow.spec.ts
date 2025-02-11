@@ -195,10 +195,6 @@ test.describe('Voting Flow', () => {
     await expect(devPage.getByText('QA User (QA) : 3')).toBeVisible();
     await expect(qaPage.getByText('Dev User (Dev) : 5')).toBeVisible();
     await expect(qaPage.getByText('QA User (QA) : 3')).toBeVisible();
-
-    // сlean up by closing contexts
-    await devContext.close();
-    await qaContext.close();
   });
 
   test('should calculate correct averages for multiple users voting', async ({
@@ -206,28 +202,20 @@ test.describe('Voting Flow', () => {
   }) => {
     const devContext = await browser.newContext();
     const qaContext = await browser.newContext();
-    const devPage = await devContext.newPage();
-    const qaPage = await qaContext.newPage();
 
-    // Dev user joins
-    await devPage.goto('/');
-    await devPage.fill(
-      'input[placeholder="Session ID"]',
-      'test-session-averages'
+    const devPage = await createUserSession(
+      devContext,
+      'test-session-averages',
+      'Dev User 1',
+      'Dev'
     );
-    await devPage.fill('input[placeholder="Your Name"]', 'Dev User 1');
-    await devPage.selectOption('select.form-input', { label: 'Dev' });
-    await devPage.click('button:has-text("Join Session")');
 
-    // QA user joins
-    await qaPage.goto('/');
-    await qaPage.fill(
-      'input[placeholder="Session ID"]',
-      'test-session-averages'
+    const qaPage = await createUserSession(
+      qaContext,
+      'test-session-averages',
+      'QA User',
+      'QA'
     );
-    await qaPage.fill('input[placeholder="Your Name"]', 'QA User');
-    await qaPage.selectOption('select.form-input', { label: 'QA' });
-    await qaPage.click('button:has-text("Join Session")');
 
     // cast votes: Dev votes 8, QA votes 4
     await devPage.getByRole('button', { name: '8', exact: true }).click();
@@ -243,9 +231,5 @@ test.describe('Voting Flow', () => {
     // verify averages are same on QA's screen
     await expect(qaPage.getByText('Dev Average: 8.00')).toBeVisible();
     await expect(qaPage.getByText('QA Average: 4.00')).toBeVisible();
-
-    // clean up
-    await devContext.close();
-    await qaContext.close();
   });
 });
