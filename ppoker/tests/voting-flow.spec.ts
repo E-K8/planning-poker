@@ -232,4 +232,43 @@ test.describe('Voting Flow', () => {
     await expect(qaPage.getByText('Dev Average: 8.00')).toBeVisible();
     await expect(qaPage.getByText('QA Average: 4.00')).toBeVisible();
   });
+
+  test('should handle multiple users voting and resetting votes correctly', async ({
+    browser,
+  }) => {
+    const devContext = await browser.newContext();
+    const qaContext = await browser.newContext();
+
+    const devPage = await createUserSession(
+      devContext,
+      'test-session-reset',
+      'Dev User 1',
+      'Dev'
+    );
+
+    const qaPage = await createUserSession(
+      qaContext,
+      'test-session-reset',
+      'QA User',
+      'QA'
+    );
+
+    // cast votes: Dev votes 8, QA votes 4
+    await devPage.getByRole('button', { name: '8', exact: true }).click();
+    await qaPage.getByRole('button', { name: '4', exact: true }).click();
+
+    // reveal votes
+    await devPage.getByRole('button', { name: 'Reveal Votes' }).click();
+
+    // verify averages
+    await expect(devPage.getByText('Dev Average: 8.00')).toBeVisible();
+    await expect(devPage.getByText('QA Average: 4.00')).toBeVisible();
+
+    // reset votes
+    await devPage.getByRole('button', { name: 'Reset Votes' }).click();
+
+    // verify votes are cleared
+    await expect(devPage.getByText('Dev User 1 (Dev) : ?')).toBeVisible();
+    await expect(qaPage.getByText('QA User (QA) : ?')).toBeVisible();
+  });
 });
