@@ -271,4 +271,45 @@ test.describe('Voting Flow', () => {
     await expect(devPage.getByText('Dev User 1 (Dev) : ?')).toBeVisible();
     await expect(qaPage.getByText('QA User (QA) : ?')).toBeVisible();
   });
+
+  test('should disconnect all users when session is ended', async ({
+    browser,
+  }) => {
+    const devContext = await browser.newContext();
+    const qaContext = await browser.newContext();
+
+    const devPage = await createUserSession(
+      devContext,
+      'test-session-end',
+      'Dev User',
+      'Dev'
+    );
+
+    const qaPage = await createUserSession(
+      qaContext,
+      'test-session-end',
+      'QA User',
+      'QA'
+    );
+
+    // verify both users are in the session initially
+    await expect(devPage.getByText('QA User (QA) : ?')).toBeVisible();
+    await expect(qaPage.getByText('Dev User (Dev) : ?')).toBeVisible();
+
+    // end session from dev's page
+    await devPage.getByRole('button', { name: 'End Session' }).click();
+
+    // verify both users are returned to the join session screen
+    await expect(devPage.getByPlaceholder('Session ID')).toBeVisible();
+    await expect(devPage.getByPlaceholder('Your Name')).toBeVisible();
+    await expect(
+      devPage.getByRole('button', { name: 'Join Session' })
+    ).toBeVisible();
+
+    await expect(qaPage.getByPlaceholder('Session ID')).toBeVisible();
+    await expect(qaPage.getByPlaceholder('Your Name')).toBeVisible();
+    await expect(
+      qaPage.getByRole('button', { name: 'Join Session' })
+    ).toBeVisible();
+  });
 });
